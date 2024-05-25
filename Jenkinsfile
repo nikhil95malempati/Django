@@ -26,12 +26,13 @@ pipeline {
         stage('Push the artifacts'){
            steps{
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'dad507a0-be23-40e2-a37e-3308399e7c71', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    
                     sh '''
                     echo 'Push to Repo'
+                    docker login -u nikhil3267 -p cognizant
                     docker push nikhil3267/todoapp:${BUILD_NUMBER}
                     '''
-                    }
+                    
                 }
             }
         }
