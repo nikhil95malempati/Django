@@ -26,15 +26,16 @@ pipeline {
         stage('Push the artifacts'){
            steps{
                 script{
-                    
+                    withCredentials([string(credentialsId: 'a07a9776-beca-466f-8460-0bf795427ced', variable: 'DOCKER_TOKEN')]) {
                     sh '''
                     echo 'Push to Repo'
-                    docker login -u nikhil3267 password cognizant 123
                     docker push nikhil3267/todoapp:${BUILD_NUMBER}
                     '''
-                    
+                    }
                 }
             }
         }
     }
 }
+
+//a07a9776-beca-466f-8460-0bf795427ced - nikhil32673
