@@ -26,7 +26,7 @@ pipeline {
         stage('Push the artifacts'){
            steps{
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'dad507a0-be23-40e2-a37e-3308399e7c71', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([string(credentialsId: '28c9564a-faba-440e-a778-005883cb7ae9', variable: 'DOCKER_TOKEN')]) {
                     sh '''
                     echo 'Push to Repo'
                     docker push nikhil3267/todoapp:${BUILD_NUMBER}
