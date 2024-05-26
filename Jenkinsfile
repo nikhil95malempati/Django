@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker{
+        docker {
             image 'python:3'
         }
     }
@@ -20,24 +20,22 @@ pipeline {
             steps {
                 script {
                     sh '''
-
-                    echo 'Buid Docker Image'
-                    docker build -t nikhil3267/todoapp:v${BUILD_NUMBER} .
+                    echo 'Build Docker Image'
+                    docker build -t nikhil3267/todoapp:${IMAGE_TAG} .
                     '''
                 }
             }
         }
 
-        stage('Push the artifacts'){
-           steps{
-                script{
-                    withCredentials([string(credentialsId: '28c9564a-faba-440e-a778-005883cb7ae9', variable: 'DOCKER_TOKEN')]) {
-                    sh '''
-                    echo 'Logging in to Docker Hub'
-                    echo $DOCKER_TOKEN | docker login -u abhishekf5 --password-stdin
-                    echo 'Push to Repo'
-                    docker push nikhil3267/todoapp:v${BUILD_NUMBER}
-                    '''
+        stage('Push the artifacts') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'd0a1f0d1-d988-4519-9391-886b74bbb920', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh '''
+                        echo 'Push to Repo'
+                        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                        docker push nikhil3267/todoapp:${IMAGE_TAG}
+                        '''
                     }
                 }
             }
