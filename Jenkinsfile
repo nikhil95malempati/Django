@@ -17,7 +17,7 @@ pipeline {
                 script {
                     sh '''
                     echo 'Build Docker Image'
-                    docker build -t nikhil3267/todoapp:v1 .
+                    docker build -t nikhil32673/todoapp:${IMAGE_TAG} .
                     '''
                 }
             }
