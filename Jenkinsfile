@@ -20,8 +20,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    echo 'Logging in to Docker Hub'
-                    echo $DOCKER_TOKEN | docker login -u abhishekf5 --password-stdin
+
                     echo 'Buid Docker Image'
                     docker build -t nikhil3267/todoapp:v${BUILD_NUMBER} .
                     '''
@@ -34,6 +33,8 @@ pipeline {
                 script{
                     withCredentials([string(credentialsId: '28c9564a-faba-440e-a778-005883cb7ae9', variable: 'DOCKER_TOKEN')]) {
                     sh '''
+                    echo 'Logging in to Docker Hub'
+                    echo $DOCKER_TOKEN | docker login -u abhishekf5 --password-stdin
                     echo 'Push to Repo'
                     docker push nikhil3267/todoapp:v${BUILD_NUMBER}
                     '''
