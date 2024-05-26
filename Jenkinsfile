@@ -12,17 +12,26 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/nikhil95malempati/Django.git'
             }
         }
-
         stage('Build Docker') {
             steps {
                 script {
                     sh '''
                     echo 'Build Docker Image'
-                    docker build -t nikhil3267/todoapp:${IMAGE_TAG} .
+                    
                     '''
                 }
             }
         }
+        // stage('Build Docker') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //             echo 'Build Docker Image'
+        //             docker build -t nikhil3267/todoapp:${IMAGE_TAG} .
+        //             '''
+        //         }
+        //     }
+        // }
 
         // stage('Push the artifacts') {
         //     steps {
