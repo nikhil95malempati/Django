@@ -57,7 +57,7 @@ pipeline {
                         git add django/deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                         git remote -v
-                        git push 
+                        git push  origin main
                         '''                        
                     }
                 }
