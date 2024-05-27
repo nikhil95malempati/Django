@@ -52,7 +52,7 @@ pipeline {
                     withCredentials([string(credentialsId: '4f7a06f4-3a7a-45e6-9e6c-5ac270d7c79a', variable: 'gittoken')]) {
                         sh '''
                         cat django/deploy.yaml
-                        sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" django/deploy.yaml
+                        sed -i "s|image: nikhil3267/todoapp:.*|image: nikhil3267/todoapp:${IMAGE_TAG}|g" django/deploy.yaml
                         cat django/deploy.yaml
                         git add django/deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
@@ -64,4 +64,6 @@ pipeline {
             }
         }
     }
+    
+    //sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" django/deploy.yaml
 }
