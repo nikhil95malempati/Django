@@ -57,7 +57,7 @@ pipeline {
                         git add django/deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                         git remote -v
-                        git push url: 'https://github.com/nikhil95malempati/k8s-cicd-yaml.git', credentialsId: '942cc9c4-a2aa-4648-b266-28bbbafc82cc'
+                        git push url: 'https://github.com/nikhil95malempati/k8s-cicd-yaml.git' --credentials '942cc9c4-a2aa-4648-b266-28bbbafc82cc'
                         '''                        
                     }
                 }
