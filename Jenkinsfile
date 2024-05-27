@@ -40,7 +40,7 @@ pipeline {
         }
         stage('Checkout K8S manifest SCM'){
             steps {
-                url: 'https://github.com/nikhil95malempati/k8s-cicd-yaml.git'
+                url: 'https://github.com/nikhil95malempati/k8s-cicd-yaml.git',
                 branch: 'main'
             }
         }
