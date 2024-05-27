@@ -52,7 +52,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: '942cc9c4-a2aa-4648-b266-28bbbafc82cc', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh '''
                         cat django/deploy.yaml
-                        sed -i '' "s/replaceImageTag/${BUILD_NUMBER}/g" django/deploy.yaml
+                        sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" django/deploy.yaml
                         cat django/deploy.yaml
                         git add django/deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
