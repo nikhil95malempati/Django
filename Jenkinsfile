@@ -1,11 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3'
-        }
-    }
-    
-
+    agent any
     environment {
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
