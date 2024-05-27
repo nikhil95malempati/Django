@@ -38,5 +38,29 @@ pipeline {
                 }
             }
         }
+        stage('Checkout K8S manifest SCM'){
+            steps {
+                url: 'https://github.com/nikhil95malempati/k8s-cicd-yaml.git'
+                branch: 'main'
+            }
+        }
+        
+        stage('Update K8S manifest & push to Repo'){
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: '942cc9c4-a2aa-4648-b266-28bbbafc82cc', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                        sh '''
+                        cat deploy.yaml
+                        sed -i '' "s/replaceImageTag/${BUILD_NUMBER}/g" django/deploy.yaml
+                        cat django/deploy.yaml
+                        git add django/deploy.yaml
+                        git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
+                        git remote -v
+                        git push https://github.com/nikhil95malempati/k8s-cicd-yaml.git
+                        '''                        
+                    }
+                }
+            }
+        }
     }
 }
