@@ -49,7 +49,7 @@ pipeline {
         stage('Update K8S manifest & push to Repo'){
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: '942cc9c4-a2aa-4648-b266-28bbbafc82cc', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    withCredentials([string(credentialsId: 'github', variable: 'gittoken')]) {
                         sh '''
                         cat django/deploy.yaml
                         sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" django/deploy.yaml
@@ -57,7 +57,7 @@ pipeline {
                         git add django/deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                         git remote -v
-                        git push  ${GIT_USERNAME}/k8s-cicd-yaml.git HEAD:main
+                        git push  https://${gittoken}@github.com/${GIT_USERNAME}/k8s-cicd-yaml.git HEAD:main
                         '''                        
                     }
                 }
