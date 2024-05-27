@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+        image 'python:3'
+    }
+    }
     
 
     environment {
@@ -14,38 +18,31 @@ pipeline {
         }
         stage('Build Docker') {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                 script {
                     sh '''
                     echo 'Build Docker Image'
-                    docker login -u nikhil3267 -p cognizant123
+                    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                     docker build -t nikhil3267/todoapp:${IMAGE_TAG} .
                     '''
+                     }
                 }
             }
         }
-        // stage('Build Docker') {
-        //     steps {
-        //         script {
-        //             sh '''
-        //             echo 'Build Docker Image'
-        //             docker build -t nikhil3267/todoapp:${IMAGE_TAG} .
-        //             '''
-        //         }
-        //     }
-        // }
 
-        // stage('Push the artifacts') {
-        //     steps {
-        //         script {
-        //             withCredentials([usernamePassword(credentialsId: 'd0a1f0d1-d988-4519-9391-886b74bbb920', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-        //                 sh '''
-        //                 echo 'Push to Repo'
-        //                 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        //                 docker push nikhil3267/todoapp:${IMAGE_TAG}
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
+
+        stage('Push the artifacts') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'd0a1f0d1-d988-4519-9391-886b74bbb920', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh '''
+                        echo 'Push to Repo'
+                        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                        docker push nikhil3267/todoapp:${IMAGE_TAG}
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
