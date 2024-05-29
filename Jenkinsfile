@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/nikhil95malempati/Django.git'
+                git branch: 'development', url: 'https://github.com/nikhil95malempati/Django.git'
             }
         }
         stage('Build Docker') {
@@ -38,5 +38,32 @@ pipeline {
                 }
             }
         }
+        stage('Checkout K8S manifest SCM'){
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/nikhil95malempati/k8s-cicd-yaml.git'
+                
+            }
+        }
+        
+        stage('Update K8S manifest & push to Repo'){
+            steps {
+                script{
+                    withCredentials([string(credentialsId: '4f7a06f4-3a7a-45e6-9e6c-5ac270d7c79a', variable: 'gittoken')]) {
+                        sh '''
+                        cat django/deploy.yaml
+                        sed -i "s|image: nikhil3267/todoapp:.*|image: nikhil3267/todoapp:${IMAGE_TAG}|g" django/deploy.yaml
+                        cat django/deploy.yaml
+                        git add django/deploy.yaml
+                        git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
+                        git remote -v
+                        git push  https://${gittoken}@github.com/nikhil95malempati/k8s-cicd-yaml.git HEAD:main
+                        '''                        
+                    }
+                }
+            }
+        }
     }
+    
+    //sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" django/deploy.yaml
 }
