@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'development', url: 'https://github.com/nikhil95malempati/Django.git'
+                git branch: 'main', url: 'https://github.com/nikhil95malempati/Django.git'
             }
         }
         stage('Build Docker') {
